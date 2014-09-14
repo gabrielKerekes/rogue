@@ -3,31 +3,15 @@
 #include "map.cpp"
 #include "character.cpp"
 
-WINDOW *create_newwin(int height, int width, int starty, int startx)
-{	WINDOW *local_win;
-
-	local_win = newwin(height, width, starty, startx);
-	box(local_win, 0 , 0);		/* 0, 0 gives default characters 
-					 * for the vertical and horizontal
-					 * lines			*/
-	wrefresh(local_win);		/* Show that box 		*/
-
-	return local_win;
-}
-
 int main() {
-	int keyPressed = '1', gd = DETECT, gm;
+	int keyPressed = '1';
 	CHARACTER player;
 	MAP map;
 	int centerX, centerY, height = MAP_SIZE + 10, width = MAP_SIZE + 10;
 	
-	initgraph(&gd, &gm, NULL);
-
-	closegraph();
-
 	srand(time(0));
 
-	/*initscr();
+	initscr();
 	raw();
 	cbreak();
 	keypad(stdscr, TRUE);
@@ -59,7 +43,7 @@ int main() {
 
 	keyPressed = getch();
 
-	endwin();*/
+	endwin();
 
 	return 0;
 }

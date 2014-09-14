@@ -4,7 +4,6 @@
 #include <string>
 #include <ncurses.h>
 #include <time.h>
-#include <graphics.h>
 
 #define MAP_SIZE 20
 #define MAX_STEPS 100
