@@ -8,9 +8,9 @@ public:
 	CHARACTER();
 	~CHARACTER(){};
 
-	void movement(int keyPressed); //moves the character, decreases stepcount per each step and calling checkBoundaries()
-	int checkBoundaries(int keyPressed); //checks whether character is inside the map
-	int checkTreasure(MAP map);
+	void movement(MAP map, int keyPressed); //moves the character, decreases stepcount per each step and calling checkBoundaries()
+	int checkBoundaries(MAP map, int keyPressed); //checks whether character is inside the map
+	int checkTreasure(MAP *map);
 };
 
 CHARACTER::CHARACTER() {
@@ -22,13 +22,9 @@ CHARACTER::CHARACTER() {
 	stepCount = 100;
 }
 
-void CHARACTER::movement(int keyPressed) {
+void CHARACTER::movement(MAP map, int keyPressed) {
 
-	//initscr();
-	//raw();
-	//keypad(stdscr, TRUE);
-	//noecho();
-	if ( checkBoundaries(keyPressed) == 0 ) { 
+	if ( checkBoundaries(map, keyPressed) == 0 ) { 
 		if ( keyPressed == KEY_UP ) {	
 				yPos--;
 				stepCount--;
@@ -46,31 +42,34 @@ void CHARACTER::movement(int keyPressed) {
 			stepCount--;
 		}
 	}
-	//endwin();
+
 }
 
-int CHARACTER::checkBoundaries(int keyPressed) {
-	if ( keyPressed == KEY_UP && yPos == 1 ) {
+int CHARACTER::checkBoundaries(MAP map, int keyPressed) {
+	if ( keyPressed == KEY_UP && map.map[yPos - 1][xPos] == WATER_CHAR ) {
 		return 1;
 	}
-	else if ( keyPressed == KEY_DOWN && yPos == 20 ) {
+	else if ( keyPressed == KEY_DOWN && map.map[yPos + 1][xPos] == WATER_CHAR) {
 		return 1;
 	}
-	else if ( keyPressed == KEY_LEFT && xPos == 1 ) {
+	else if ( keyPressed == KEY_LEFT && map.map[yPos][xPos - 1] == WATER_CHAR ) {
 		return 1;
 	}
-	else if ( keyPressed == KEY_RIGHT && xPos == 20 ) {
+	else if ( keyPressed == KEY_RIGHT && map.map[yPos][xPos + 1] == WATER_CHAR ) {
 		return 1;
 	}
 	return 0;
 }
 
-int CHARACTER::checkTreasure(MAP map) {
+int CHARACTER::checkTreasure(MAP *map) {
 	int i;
 
 	for ( i = 0; i < NUM_OF_TREASURES; i++ ) {
-		if ( map.treasures.treasures[i].xPos == xPos && map.treasures.treasures[i].yPos == yPos ) {
+		if ( map->treasures.treasures[i].xPos == xPos && map->treasures.treasures[i].yPos == yPos ) {
 			points += 10;
+			map->treasures.treasures[i].xPos = 0;
+			map->treasures.treasures[i].yPos = 0;
+			map->map[map->treasures.treasures[i].yPos][map->treasures.treasures[i].xPos] = GROUND_CHAR;
 		}
 	}
 }

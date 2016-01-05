@@ -5,7 +5,7 @@ public:
 	int xPos, yPos;
 	bool taken;
 
-	TREASURE(){};
+	TREASURE(){ taken = FALSE; };
 	~TREASURE(){};
 };
 
